@@ -1,0 +1,148 @@
+ 
+.table--heading {
+    
+    font-weight: thin;
+    border: 1px solid #c5c4c48f; 
+    text-align: center;
+    font-family: "Raleway", sans-serif;
+}
+
+.table--heading th { 
+    text-align: center;
+    padding: 1rem; 
+    color: #8585859b;
+    
+} 
+
+.table--body {
+    text-align: center;
+    font-size: .85rem; 
+    color: #494949af;
+    
+}
+
+.symbol {
+    font-family: "Raleway", sans-serif;
+    font-weight: bolder;
+    color: #000;
+}
+
+
+table {
+    border-collapse: collapse;
+    border-spacing: 12px;
+    table-layout: fixed;
+    width: 100%;
+}
+
+
+.table--row { 
+    transform: translateY(-28px);
+    opacity: 0;
+    font-weight: bold;
+    transition: all 300ms linear;
+    transition-delay: calc( var(--order) * 200ms + 800ms);; 
+    border-bottom: 1px solid #c5c4c48f;
+}
+
+.num--values {
+    font-family: "Roboto Mono", monospace; 
+}
+ 
+.table--row td {
+    padding: 1rem;
+
+}
+
+.arrow--up {
+    color: rgb(87, 250, 87);
+}
+
+.arrow--down {
+    color: rgb(255, 65, 65);
+}
+
+
+
+.fadeIn {
+    opacity: 1; 
+}
+
+.dropDown {
+    transform: translateY(0);
+}
+
+
+ 
+
+.table--page {
+    display: grid; 
+    padding: 0 1rem ;
+}
+.filter--btns button {
+    margin: 5px;
+}
+
+
+.current--page {
+    background-color: rgba(111, 111, 234, 0.629);
+    color: #fff;
+    border: 0;
+}
+
+.table--page section {
+    display: flex; 
+    justify-content: center;
+}
+
+.btn--group {
+    display: flex; 
+    justify-content: space-between;
+}
+ 
+.btn--group svg {
+    transform: translateY(2px);
+}
+
+.activity--btns button {
+    margin-right: 1rem;
+}
+
+.sort--icon {
+    cursor: pointer;
+    transition: color 300ms linear ;
+}
+
+.sort--icon:hover {
+    color: #000;
+} 
+
+
+@media (max-width: 950px) {
+    
+    
+
+    .num--values {
+        font-size: 50%;
+    }
+
+    .symbol {
+        font-size: 50%;
+    }
+
+    .btn--group {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .table--heading th {
+        padding: 0;
+    }
+
+    .table--row td {
+        padding: 5px;
+    }
+
+}

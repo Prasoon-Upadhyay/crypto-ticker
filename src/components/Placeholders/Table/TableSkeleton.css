@@ -1,0 +1,62 @@
+
+.table--placeholder--comp {
+    display: flex;
+    flex-direction: column; 
+}
+
+.btn--skeletons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-self: center;
+}
+ 
+
+.btn--skeleton {
+    
+    width: 5rem;
+    height: 2rem;
+    border-radius: .5rem; 
+    background-color: rgb(192, 216, 236);
+    animation: pulse 2s linear infinite;
+    margin: 1rem;
+}
+
+table {
+    border-collapse: collapse;;
+}
+h1 {
+    text-align: center;
+}
+
+thead {
+    font-family: "Raleway", sans-serif;
+    padding: 1rem; 
+    color: #8585859b;
+}
+
+.placeholder--row {
+
+    background-color: rgb(192, 216, 236);
+    animation: pulse 2s linear infinite;
+}
+
+.placeholder--row td {
+    padding: 1rem;
+    border: 15px solid #fff;
+}
+
+@keyframes pulse {
+    
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: .3;
+    }
+
+    100%{
+        opacity: 1;
+    }
+}

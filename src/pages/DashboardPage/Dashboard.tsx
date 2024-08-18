@@ -15,6 +15,8 @@ export default function Dashboard () {
     const imageRef = useRef<HTMLImageElement | null>(null)
     const pageRef = useRef<HTMLElement | null>(null)
 
+    // The page, h1, image animations being handled
+
     useEffect( () => {
         
         const pageTimeout = setTimeout( () => {

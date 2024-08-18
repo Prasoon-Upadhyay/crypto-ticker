@@ -5,16 +5,12 @@ import throttle from "../../assets/utils/throttle";
 import axios from "axios";
 import { useNavigate } from "react-router-dom"; 
 import { ApexOptions } from 'apexcharts';
-
-interface Series {
-    x: Date,
-    y: number[]
-}
+import { Series } from "../../assets/utils/types"; 
 
 export default function CandleStick ( { tickerSymbol, interval } : { tickerSymbol: string, interval: string } ) {
 
-    const [candleData, setCandleData] = useState<Series[]>([]); 
-    const [lastCandle, setLastCandle] = useState<Series | null>(null);
+    const [candleData, setCandleData] = useState<Series[]>([]);  // ALl the data state
+    const [lastCandle, setLastCandle] = useState<Series | null>(null); // State for the Last Candle sent by the Stream
  
     const navigate = useNavigate();
 
@@ -44,6 +40,7 @@ export default function CandleStick ( { tickerSymbol, interval } : { tickerSymbo
     }
 
 
+    // Fetching the Initial Data and establishing the Socket Connection for live updates 
 
     useEffect( () => {
 
@@ -51,18 +48,20 @@ export default function CandleStick ( { tickerSymbol, interval } : { tickerSymbo
 
         const socket = new WebSocket(`wss://stream.binance.com:9443/ws/${tickerSymbol.toLowerCase()}@kline_${interval}`);
         
+        // The Stream being throttled down to every 5s.
+
         const throttledMessage = throttle((event: MessageEvent) => {
             const tickerData = JSON.parse(event.data);
  
             
-            if (!tickerData.k.x && tickerData.k.i === interval) { 
+            if (!tickerData.k.x && tickerData.k.i === interval) { // We check that if the latest candle being received and the interval selected are the same and that the candle is open.
                 setLastCandle({
-                    x: new Date(tickerData.k.t),
+                    x: new Date(tickerData.k.t), // The Interval of the Kline
                     y: [
-                        parseFloat(tickerData.k.o),
-                        parseFloat(tickerData.k.h),
-                        parseFloat(tickerData.k.l),
-                        parseFloat(tickerData.k.c)
+                        parseFloat(tickerData.k.o), // Open
+                        parseFloat(tickerData.k.h), // High
+                        parseFloat(tickerData.k.l), // Low
+                        parseFloat(tickerData.k.c)  // Close
                     ]
                 });
             }
@@ -79,6 +78,8 @@ export default function CandleStick ( { tickerSymbol, interval } : { tickerSymbo
     },[tickerSymbol, interval])
     
 
+    // 
+
     useEffect(() => {
         if (lastCandle) { 
             
@@ -87,11 +88,14 @@ export default function CandleStick ( { tickerSymbol, interval } : { tickerSymbo
                 const lastIndex = prevData.length - 1;
                 let updatedData = [...prevData]; 
             
+                // If the interval of both the last candle and the latest candle are the same, update the last candle 
+
                 if (updatedData[lastIndex].x.getTime() === lastCandle.x.getTime()) 
                 {
                     updatedData[lastIndex] = lastCandle;  
                 }
 
+                // If not, then add the latest candle to the candleData State.
                 else
                 { 
                     updatedData = [...updatedData, lastCandle];  
@@ -103,6 +107,9 @@ export default function CandleStick ( { tickerSymbol, interval } : { tickerSymbo
             });
         }
     }, [lastCandle]);
+
+
+    // Options for CandleStick Chart
 
     const options : ApexOptions  = {
         chart: {
@@ -134,7 +141,7 @@ export default function CandleStick ( { tickerSymbol, interval } : { tickerSymbo
         plotOptions: {
             candlestick: {
                 colors: {
-                    upward: 'rgba(111, 111, 234, 0.629)',  
+                    upward: 'rgba(135, 182, 252, 0.738)',  
                     downward: 'rgba(241, 153, 38, 0.877)', 
                 },
                 wick: {

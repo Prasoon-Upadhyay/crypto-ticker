@@ -16,6 +16,9 @@ export default function CanPage () {
     const navigate = useNavigate(); 
     
     const pageRef = useRef<HTMLDivElement | null>(null)
+    
+    // Page Animation on Load
+
     useEffect( () => {
         
         const pageTimeout = setTimeout( () => {
@@ -31,6 +34,8 @@ export default function CanPage () {
 
     }, [])
 
+
+    // Intializing the Tickers on PageLoad
     useEffect( () => {
         async function getAllTickers() {
             try 
@@ -53,7 +58,7 @@ export default function CanPage () {
     }, [])
 
 
-    
+    // Setting the current ticker after all the tickers are fetched
     useEffect( () => {
         
         if(tickerSymbols.length > 0)
@@ -73,7 +78,7 @@ export default function CanPage () {
                         onChange={(e) => setCurrentTicker(e.target.value)}
                     >
                         {
-                            tickerSymbols.map( ticker => <option value={ticker}>{ticker}</option>)
+                            tickerSymbols.map( (ticker, i) => <option key = {i} value={ticker}>{ticker}</option>)
                         } 
                     </select>  
                     <select

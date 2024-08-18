@@ -10,75 +10,15 @@ import { FaSortNumericUp, FaSortNumericDown } from "react-icons/fa";
 import { IoIosArrowBack } from "react-icons/io";
 import { BiReset } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
-
-interface Ticker24hr {
-    symbol: string;                 
-    priceChange: string;           
-    priceChangePercent: string;
-    weightedAvgPrice: string;
-    prevClosePrice: string;
-    lastPrice: string;              
-    lastQty: string;                
-    bidPrice: string;               
-    bidQty: string;                 
-    askPrice: string;               
-    askQty: string;                 
-    openPrice: string;               
-    highPrice: string;               
-    lowPrice: string;                
-    volume: string;                  
-    quoteVolume: string;             
-    openTime: number;               
-    closeTime: number;              
-    firstId: number;                 
-    lastId: number;                  
-    count: number;                   
-}
-
-export interface TickerData {
-    symbol: string;
-    open: number;
-    high: number;
-    low: number;
-    close: number;
-    volume: number;
-    marketCap: number;
-    pChange: number
-}
-
-interface TickerStream {
-    e: string;                
-    E: number;                
-    s: string;               
-    p: string;               
-    P: string;                
-    w: string;                
-    x: string;               
-    c: string;               
-    Q: string;               
-    b: string;               
-    B: string;               
-    a: string;               
-    A: string;               
-    o: string;               
-    h: string;               
-    l: string;               
-    v: string;                 
-    q: string;                 
-    O: number;                 
-    C: number;                 
-    F: number;                
-    L: number;                
-    n: number;                
-}
-
+import { TickerData, Ticker24hr, TickerStream } from "../../assets/utils/types";
+ 
 
 export default function TickerTable () {
 
-    const [tableData, setTableData] = useState<TickerData[]>([]);
-    const [page, setPage] = useState<number>(1);
-    const [filter, setFilter] = useState('all')
-    const [sort, setSort] = useState(
+    const [tableData, setTableData] = useState<TickerData[]>([]); // All The Data
+    const [page, setPage] = useState<number>(1);                  // Pagination State
+    const [filter, setFilter] = useState('all')                   // Filtering State
+    const [sort, setSort] = useState(                             // Sorting State
         {
             ifSort: false,
             symbol : {
@@ -95,6 +35,8 @@ export default function TickerTable () {
     
     const navigate = useNavigate();
  
+ 
+
     const fetchMarketData = async () => {
         try {
             const response = await axios.get('https://api.binance.com/api/v3/ticker/24hr'); 
@@ -118,23 +60,28 @@ export default function TickerTable () {
         }
     };
 
+
+    // Paginationm Buttons
+
     const renderedBtns = 
     [
-        <button disabled = {page === 1} className="prev--btn" onClick={() => setPage((prevPage) => prevPage - 1)}>Previous</button>,
+        <button key={Math.random()* 9999} disabled = {page === 1} className="prev--btn" onClick={() => setPage((prevPage) => prevPage - 1)}>Previous</button>,
         
-        page !== 1 ? <button>{page - 1}</button> : '',
-        <button className="current--page">{page}</button>,
-        <button>{page + 1}</button>,
+        page !== 1 ? <button key={Math.random()* 9999}>{page - 1}</button> : '',
+        <button key={Math.random()* 9999} className="current--page">{page}</button>,
+        <button key={Math.random()* 9999}>{page + 1}</button>,
         <span> &nbsp; . . . &nbsp;</span>,  
 
-        page < Math.ceil(tableData.length / 8) - 10 ? <button disabled = {page === Math.ceil(tableData.length / 8) - 10 }  onClick={ () => setPage( (prevPage) => prevPage + 10) }>{page + 10}</button>: '',
-        page < Math.ceil(tableData.length / 8) - 11 ? <button disabled = {page === Math.ceil(tableData.length / 8) - 10 }  onClick={ () => setPage( (prevPage) => prevPage + 11) }>{page + 11}</button> : '',
-        page < Math.ceil(tableData.length / 8) - 12 ? <button disabled = {page === Math.ceil(tableData.length / 8) - 10 }  onClick={ () => setPage( (prevPage) => prevPage + 12) }>{page + 12}</button>: '',
+        page < Math.ceil(tableData.length / 8) - 10 ? <button key={Math.random()* 9999} disabled = {page === Math.ceil(tableData.length / 8) - 10 }  onClick={ () => setPage( (prevPage) => prevPage + 10) }>{page + 10}</button>: '',
+        page < Math.ceil(tableData.length / 8) - 11 ? <button key={Math.random()* 9999} disabled = {page === Math.ceil(tableData.length / 8) - 10 }  onClick={ () => setPage( (prevPage) => prevPage + 11) }>{page + 11}</button> : '',
+        page < Math.ceil(tableData.length / 8) - 12 ? <button key={Math.random()* 9999} disabled = {page === Math.ceil(tableData.length / 8) - 10 }  onClick={ () => setPage( (prevPage) => prevPage + 12) }>{page + 12}</button>: '',
         
-        <button className="next--btn" onClick={() => setPage((prevPage) => prevPage + 1)}>Next</button>,
+        <button key={Math.random()* 9999} className="next--btn" onClick={() => setPage((prevPage) => prevPage + 1)}>Next</button>,
          
     ]
     
+
+    // Fetching the Initial Data for the Ticker and establishing Socket Connection for Live Updates
 
     useEffect(() => {
         fetchMarketData();
@@ -166,7 +113,9 @@ export default function TickerTable () {
          
     }, []);
  
-     
+    
+    // Filtering Data using the Filter State and memoizing the array 
+
     const filteredData = useMemo( () => {
 
         let data = tableData;
@@ -179,6 +128,8 @@ export default function TickerTable () {
 
     },[filter, tableData]);
     
+    // Sorting Data using the Filter State and memoizing the array 
+
     const sortedData = useMemo(() => {
 
         const data = [...filteredData];
@@ -208,6 +159,9 @@ export default function TickerTable () {
         return data;
         
     }, [sort, filteredData]);
+
+
+    // Paging the Data using the Filter State and memoizing the array     
     
     const paginatedData = useMemo( () => {
 
@@ -216,6 +170,8 @@ export default function TickerTable () {
 
     }, [page, sortedData])
 
+
+    // The sorting function being memoized such that to prevent redeclaration on every re-render due to the Socket Streams
 
     const handleSort = useCallback((column: 'symbol' | 'marketCap') => {
 

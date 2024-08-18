@@ -54,8 +54,8 @@ button {
   font-family: "Roboto Mono", monospace; 
   padding: .5rem;
   background: inherit;
-  border: 1px solid rgba(111, 111, 234, 0.629) ;
-  color: rgba(111, 111, 234, 0.629);
+  border: 1px solid rgba(114, 170, 254, 0.738) ;
+  color: rgba(114, 170, 254, 0.738);
   border-radius: 5px;
   margin: 1rem 0;
   cursor: pointer;
@@ -75,7 +75,7 @@ button:disabled {
 
 
 .bg--overlay { 
-  background-color: rgba(111, 111, 234, 0.629);
+  background-color: rgba(135, 182, 252, 0.738);
   padding: 2rem;
   height: 100vh; 
 

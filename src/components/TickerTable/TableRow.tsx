@@ -1,5 +1,5 @@
 import { CSSProperties, useEffect, useRef } from "react";
-import { TickerData } from "./TickerTable";
+import { TickerData } from "../../assets/utils/types";
 
 import { FaArrowTrendUp } from "react-icons/fa6";
 import { FaArrowTrendDown } from "react-icons/fa6";

@@ -110,6 +110,10 @@ export default function TickerTable () {
         }, 5000);
 
         socket.onmessage = throttledMessage;
+
+        return () => {
+            socket.close();
+        }
          
     }, []);
  
